@@ -9,7 +9,7 @@ socket = new WebSocket(socketProtocol + window.location.host)
 socket.onmessage = function (event) {
   var message = JSON.parse(event.data)
   if (message.type === 'peers') {
-    console.log(message.peerIds)
+    console.log('peerIds', message.peerIds)
     openConnectionsToPeers(message.peerIds)
   } else if (message.type === 'peer') {
     focPeer(message.peerId)
@@ -22,7 +22,7 @@ function sendIdToServer () {
 }
 
 /* peerjs */
-peer = new Peer({host: 'desolate-springs-61251.herokuapp.com', secure: true, port: ''})
+peer = new Peer({host: 'desolate-springs-61251.herokuapp.com', secure: true, port: '', debug: 2})
 peers = {}
 function focPeer(id) {
   if (!peers[id]) {
