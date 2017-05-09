@@ -142,16 +142,16 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 
 		switch ( event.keyCode ) {
 
-			case 38: /*up*/
+			case 38: /*up*/ this.mouseY = -500; break;
 			case 87: /*W*/ this.moveForward = true; break;
 
-			case 37: /*left*/
+			case 37: /*left*/ this.mouseX = -500; break;
 			case 65: /*A*/ this.moveLeft = true; break;
 
-			case 40: /*down*/
+			case 40: /*down*/ this.mouseY = 500; break;
 			case 83: /*S*/ this.moveBackward = true; break;
 
-			case 39: /*right*/
+			case 39: /*right*/ this.mouseX = 500; break;
 			case 68: /*D*/ this.moveRight = true; break;
 
 			case 82: /*R*/ this.moveUp = true; break;
@@ -165,16 +165,16 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 
 		switch ( event.keyCode ) {
 
-			case 38: /*up*/
+			case 38: /*up*/ this.mouseY = 0; break;
 			case 87: /*W*/ this.moveForward = false; break;
 
-			case 37: /*left*/
+			case 37: /*left*/ this.mouseX = 0; break;
 			case 65: /*A*/ this.moveLeft = false; break;
 
-			case 40: /*down*/
+			case 40: /*down*/ this.mouseY = 0; break;
 			case 83: /*S*/ this.moveBackward = false; break;
 
-			case 39: /*right*/
+			case 39: /*right*/ this.mouseX = 0; break;
 			case 68: /*D*/ this.moveRight = false; break;
 
 			case 82: /*R*/ this.moveUp = false; break;
@@ -263,7 +263,7 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 
 		this.domElement.removeEventListener( 'contextmenu', contextmenu, false );
 		this.domElement.removeEventListener( 'mousedown', _onMouseDown, false );
-		this.domElement.removeEventListener( 'mousemove', _onMouseMove, false );
+		//this.domElement.removeEventListener( 'mousemove', _onMouseMove, false );
 		this.domElement.removeEventListener( 'mouseup', _onMouseUp, false );
 
 		window.removeEventListener( 'keydown', _onKeyDown, false );
@@ -278,7 +278,7 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 	var _onKeyUp = bind( this, this.onKeyUp );
 
 	this.domElement.addEventListener( 'contextmenu', contextmenu, false );
-	this.domElement.addEventListener( 'mousemove', _onMouseMove, false );
+	//this.domElement.addEventListener( 'mousemove', _onMouseMove, false );
 	this.domElement.addEventListener( 'mousedown', _onMouseDown, false );
 	this.domElement.addEventListener( 'mouseup', _onMouseUp, false );
 

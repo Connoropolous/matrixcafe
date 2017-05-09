@@ -7,12 +7,12 @@ var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHe
 camera.position.set( 0, 1.5, 2 )
 var controls = new THREE.FirstPersonControls( camera )
 controls.lookSpeed = 0.1;
-controls.movementSpeed = 1;
+controls.movementSpeed = 3;
 controls.noFly = false;
 controls.lookVertical = true;
 controls.constrainVertical = true;
-controls.verticalMin = 1.5;
-controls.verticalMax = 2.0;
+controls.verticalMin = 1.0;
+controls.verticalMax = 2.5;
 controls.lon = 250;
 controls.lat = 30;
 
@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
   /* usermedia */
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
   navigator.getUserMedia({video: true, audio: true}, function(stream) {
-    console.log(stream.getAudioTracks())
     myCamera = stream
     var videoElement = document.createElement('video')
     videoElement.id = 'mine'
