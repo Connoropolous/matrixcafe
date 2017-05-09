@@ -9,6 +9,7 @@ socket = new WebSocket(socketProtocol + window.location.host)
 socket.onmessage = function (event) {
   var message = JSON.parse(event.data)
   if (message.type === 'peers') {
+    console.log(message.peerIds)
     openConnectionsToPeers(message.peerIds)
   } else if (message.type === 'peer') {
     focPeer(message.peerId)
