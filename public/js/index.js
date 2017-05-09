@@ -40,7 +40,7 @@ function render() {
 }
 
 var sendInterval = window.setInterval(function () {
-  Object.keys(peers).forEach(function (id) {
+  peers && Object.keys(peers).forEach(function (id) {
     if (peers[id].connection) {
       peers[id].connection.send(JSON.stringify({
         px: camera.position.x,

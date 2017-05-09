@@ -21,7 +21,7 @@ function sendIdToServer () {
 }
 
 /* peerjs */
-peer = new Peer({key: '1p2ivy5y8957y14i'})
+peer = new Peer({host: 'desolate-springs-61251.herokuapp.com', secure: true, port: ''})
 peers = {}
 function focPeer(id) {
   if (!peers[id]) {
