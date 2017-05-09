@@ -4,7 +4,8 @@ var peer, peers, myId, socket
 function json(object) {
   return JSON.stringify(object)
 }
-socket = new WebSocket('ws://' + window.location.host)
+var socketProtocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://'
+socket = new WebSocket(socketProtocol + window.location.host)
 socket.onmessage = function (event) {
   var message = JSON.parse(event.data)
   if (message.type === 'peers') {
