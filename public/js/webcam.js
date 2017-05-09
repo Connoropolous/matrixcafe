@@ -8,11 +8,24 @@ var socketProtocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://'
 socket = new WebSocket(socketProtocol + window.location.host)
 socket.onmessage = function (event) {
   var message = JSON.parse(event.data)
-  if (message.type === 'peers') {
-    console.log('peerIds', message.peerIds)
-    openConnectionsToPeers(message.peerIds)
-  } else if (message.type === 'peer') {
-    focPeer(message.peerId)
+  if (message.type === 'peer') {
+    var otherId = message.id
+    var otherPeer = {
+      call: peer.call(otherId, myCamera),
+      connection: peer.connect(otherId),
+      video: null
+    }
+    otherPeer.call.on('stream', function(stream) {
+      addVideoObjectForPeer(otherId, stream)
+    })
+    otherPeer.call.on('close', removePeer)
+    otherPeer.connection.on('data', function(data) {
+      data = JSON.parse(data)
+      otherPeer.video.position.set(data.px, data.py, data.pz)
+      otherPeer.video.rotation.set(data.rx, data.ry, data.rz)
+    })
+    otherPeer.connection.on('close', removePeer)
+    peers[otherId] = otherPeer
   }
 }
 function sendIdToServer () {
@@ -68,29 +81,6 @@ peer.on('connection', function(conn) {
   })
   conn.on('close', removePeer)
 })
-
-// send a call and data connection out to everyone already here
-function openConnectionsToPeers (peerIds) {
-  if (myCamera) {
-    peerIds.forEach(function(id) {
-      peers[id] = {
-        call: peer.call(id, myCamera),
-        connection: peer.connect(id),
-        video: null
-      }
-      peers[id].call.on('stream', function(stream) {
-        addVideoObjectForPeer(id, stream)
-      })
-      peers[id].call.on('close', removePeer)
-      peers[id].connection.on('data', function(data) {
-        data = JSON.parse(data)
-        peers[id].video.position.set(data.px, data.py, data.pz)
-        peers[id].video.rotation.set(data.rx, data.ry, data.rz)
-      })
-      peers[id].connection.on('close', removePeer)
-    })
-  } else setTimeout(function(){openConnectionsToPeers(peerIds)}, 50)
-}
 
 /* 3d video objects */
 function addVideoObjectForPeer (id, stream) {
