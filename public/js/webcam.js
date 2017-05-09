@@ -37,6 +37,7 @@ function focPeer(id) {
 peer.on('open', function(id) {
   myId = id
   sendIdToServer()
+  pingHeroku()
 })
 function removePeer(call) {
   if (call) {
