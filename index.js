@@ -25,6 +25,7 @@ app.ws('/', function(socket, req) {
       aWss.clients.forEach(function(client) {
         if (client !== socket) client.send(json({type: 'peer', peerId: msg.id}));
       })
+      console.log(peerIds)
     }
   })
   socket.on('close', function() {
