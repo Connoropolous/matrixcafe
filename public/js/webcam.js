@@ -1,5 +1,14 @@
 var peer, peers, myId, socket
 
+var videoEls = {}
+function adjustVolumeForDistance(id) {
+  var el = videoEls[id] || document.getElementById(id)
+  var distance = peers[id].video.position.distanceTo(camera.position)
+  var minAudibleDistance = 15
+  var volume = (minAudibleDistance - Math.min(distance, minAudibleDistance)) / minAudibleDistance
+  el.volume = volume
+}
+
 /* websockets */
 function json(object) {
   return JSON.stringify(object)
@@ -23,6 +32,7 @@ socket.onmessage = function (event) {
       data = JSON.parse(data)
       otherPeer.video.position.set(data.px, data.py, data.pz)
       otherPeer.video.rotation.set(data.rx, data.ry, data.rz)
+      adjustVolumeForDistance(otherId)
     })
     otherPeer.connection.on('close', removePeer(otherId))
     peers[otherId] = otherPeer
@@ -81,6 +91,7 @@ peer.on('connection', function(conn) {
     data = JSON.parse(data)
     focPeer(conn.peer).video.position.set(data.px, data.py, data.pz)
     focPeer(conn.peer).video.rotation.set(data.rx, data.ry, data.rz)
+    adjustVolumeForDistance(conn.peer)
   })
   conn.on('close', removePeer(conn.peer))
 })
