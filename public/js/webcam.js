@@ -30,9 +30,11 @@ socket.onmessage = function (event) {
     otherPeer.call.on('close', removePeer(otherId))
     otherPeer.connection.on('data', function(data) {
       data = JSON.parse(data)
-      otherPeer.video.position.set(data.px, data.py, data.pz)
-      otherPeer.video.rotation.set(data.rx, data.ry, data.rz)
-      adjustVolumeForDistance(otherId)
+      if (otherPeer.video) {
+        otherPeer.video.position.set(data.px, data.py, data.pz)
+        otherPeer.video.rotation.set(data.rx, data.ry, data.rz)
+        adjustVolumeForDistance(otherId)
+      }
     })
     otherPeer.connection.on('close', removePeer(otherId))
     peers[otherId] = otherPeer
@@ -89,9 +91,11 @@ peer.on('connection', function(conn) {
   focPeer(conn.peer).connection = conn
   conn.on('data', function(data) {
     data = JSON.parse(data)
-    focPeer(conn.peer).video.position.set(data.px, data.py, data.pz)
-    focPeer(conn.peer).video.rotation.set(data.rx, data.ry, data.rz)
-    adjustVolumeForDistance(conn.peer)
+    if (focPeer(conn.peer).video) {
+      focPeer(conn.peer).video.position.set(data.px, data.py, data.pz)
+      focPeer(conn.peer).video.rotation.set(data.rx, data.ry, data.rz)
+      adjustVolumeForDistance(conn.peer)
+    }
   })
   conn.on('close', removePeer(conn.peer))
 })
