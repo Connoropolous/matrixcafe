@@ -18,13 +18,13 @@ socket.onmessage = function (event) {
     otherPeer.call.on('stream', function(stream) {
       addVideoObjectForPeer(otherId, stream)
     })
-    otherPeer.call.on('close', removePeer)
+    otherPeer.call.on('close', removePeer(otherId))
     otherPeer.connection.on('data', function(data) {
       data = JSON.parse(data)
       otherPeer.video.position.set(data.px, data.py, data.pz)
       otherPeer.video.rotation.set(data.rx, data.ry, data.rz)
     })
-    otherPeer.connection.on('close', removePeer)
+    otherPeer.connection.on('close', removePeer(otherId))
     peers[otherId] = otherPeer
   }
 }
@@ -53,10 +53,10 @@ peer.on('open', function(id) {
   sendIdToServer()
   pingHeroku()
 })
-function removePeer(call) {
-  if (call) {
-    scene.remove(scene.getObjectByName(call.peer))
-    delete peers[call.peer]
+function removePeer(id) {
+  return function () {
+    scene.remove(scene.getObjectByName(id))
+    delete peers[id]
   }
 }
 // receiving
@@ -68,7 +68,7 @@ peer.on('call', function(call) {
       call.on('stream', function(stream) {
         addVideoObjectForPeer(call.peer, stream)
       })
-      call.on('close', removePeer)
+      call.on('close', removePeer(call.peer))
     } else setTimeout(answer, 50)
   }
   answer()
@@ -80,7 +80,7 @@ peer.on('connection', function(conn) {
     focPeer(conn.peer).video.position.set(data.px, data.py, data.pz)
     focPeer(conn.peer).video.rotation.set(data.rx, data.ry, data.rz)
   })
-  conn.on('close', removePeer)
+  conn.on('close', removePeer(conn.peer))
 })
 
 /* 3d video objects */
