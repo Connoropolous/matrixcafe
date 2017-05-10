@@ -54,7 +54,24 @@ var sendInterval = window.setInterval(function () {
   })
 }, 100)
 
+function hideInstr() {
+  var instr = document.querySelector('.instructions')
+  instr.style.display = 'none'
+}
+
+function toggleMute() {
+  var enabled = myCamera.getAudioTracks()[0].enabled
+  myCamera.getAudioTracks()[0].enabled = !enabled
+  var mute = document.querySelector('.mute')
+  mute.classList.toggle('active')
+}
+
 document.addEventListener('DOMContentLoaded', function(event) {
+  var close = document.querySelector('.close')
+  close.addEventListener('click', hideInstr)
+  setTimeout(hideInstr, 15000)
+  var mute = document.querySelector('.mute')
+  mute.addEventListener('click', toggleMute)
   document.body.appendChild(renderer.domElement)
   /* usermedia */
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
