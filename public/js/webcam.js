@@ -37,7 +37,7 @@ function sendIdToServer () {
 /* peerjs */
 peer = new Peer({host: 'desolate-springs-61251.herokuapp.com', secure: true, port: '', debug: 3})
 function pingHeroku() {
-    socket.readyState && socket.send('ping')
+    socket.readyState && socket.send(json({type:'ping'}))
     peer.socket.send({type: 'ping'})
     timeoutID = setTimeout(pingHeroku, 20000)
 }
