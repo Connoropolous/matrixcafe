@@ -57,6 +57,8 @@ function removePeer(id) {
   return function () {
     scene.remove(scene.getObjectByName(id))
     delete peers[id]
+    var e = document.getElementById(id)
+    e && e.remove()
   }
 }
 // receiving
