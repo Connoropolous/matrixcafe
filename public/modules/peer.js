@@ -607,8 +607,11 @@ Negotiator._makeOffer = function(connection) {
     util.log('Created offer.');
 
     if (!util.supports.sctp && connection.type === 'data' && connection.reliable) {
+      console.log('running higherBandwidthSDP')
       offer.sdp = Reliable.higherBandwidthSDP(offer.sdp);
     }
+
+    console.log('offer', offer)
 
     pc.setLocalDescription(offer, function() {
       util.log('Set localDescription: offer', 'for:', connection.peer);

@@ -19,6 +19,7 @@ socket.onmessage = function (event) {
   var message = JSON.parse(event.data)
   if (message.type === 'peer') {
     console.log('receiving a peer added event for peer ' + message.id)
+    console.log('initiate a call')
     var otherId = message.id
     var otherPeer = {
       call: peer.call(otherId, myCamera),
