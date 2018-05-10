@@ -551,6 +551,10 @@ Negotiator._setupListeners = function(connection, pc, pc_id) {
   // Fallback for older Chrome impls.
   pc.onicechange = pc.oniceconnectionstatechange;
 
+  pc.onsignalingstatechange = function() {
+    console.log('onsignalingstatechange pc.signalingState-> ', pc.signalingState)
+  }
+
   // ONNEGOTIATIONNEEDED (Chrome)
   util.log('Listening for `negotiationneeded`');
   pc.onnegotiationneeded = function() {
