@@ -22,16 +22,16 @@ socket.onmessage = function (event) {
     console.log('initiate a call')
     var otherId = message.id
     var otherPeer = {
-      call: peer.call(otherId, myCamera),
+      call: null, // peer.call(otherId, myCamera),
       connection: null, // peer.connect(otherId),
       video: null
     }
-    otherPeer.call.on('stream', function(stream) {
+    /*otherPeer.call.on('stream', function(stream) {
       console.log('receiving a stream from ' + message.id)
       addVideoObjectForPeer(otherId, stream)
     })
     otherPeer.call.on('close', removePeer(otherId))
-    /*otherPeer.connection.on('data', function(data) {
+    otherPeer.connection.on('data', function(data) {
       data = JSON.parse(data)
       if (otherPeer.video) {
         otherPeer.video.position.set(data.px, data.py, data.pz)
