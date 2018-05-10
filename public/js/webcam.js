@@ -18,6 +18,7 @@ socket = new WebSocket(socketProtocol + window.location.host)
 socket.onmessage = function (event) {
   var message = JSON.parse(event.data)
   if (message.type === 'peer') {
+    console.log('receiving a peer added event for peer ' + message.id)
     var otherId = message.id
     var otherPeer = {
       call: peer.call(otherId, myCamera),
@@ -25,6 +26,7 @@ socket.onmessage = function (event) {
       video: null
     }
     otherPeer.call.on('stream', function(stream) {
+      console.log('receiving a stream from ' + message.id)
       addVideoObjectForPeer(otherId, stream)
     })
     otherPeer.call.on('close', removePeer(otherId))
@@ -61,6 +63,7 @@ function focPeer(id) {
   return peers[id]
 }
 peer.on('open', function(id) {
+  console.log('opening the peer with id ' + id)
   myId = id
   sendIdToServer()
   pingHeroku()
@@ -75,11 +78,14 @@ function removePeer(id) {
 }
 // receiving
 peer.on('call', function(call) {
+  console.log('receiving a call from ' + call.peer)
   focPeer(call.peer).call = call
   function answer() {
     if (myCamera) {
+      console.log('answering a call from ' + call.peer)
       call.answer(myCamera)
       call.on('stream', function(stream) {
+        console.log('receiving a stream from ' + call.peer)
         addVideoObjectForPeer(call.peer, stream)
       })
       call.on('close', removePeer(call.peer))
@@ -88,6 +94,7 @@ peer.on('call', function(call) {
   answer()
 })
 peer.on('connection', function(conn) {
+  console.log('formed a connection with peer ' + conn.peer)
   focPeer(conn.peer).connection = conn
   conn.on('data', function(data) {
     data = JSON.parse(data)
