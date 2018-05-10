@@ -22,7 +22,7 @@ socket.onmessage = function (event) {
     var otherId = message.id
     var otherPeer = {
       call: peer.call(otherId, myCamera),
-      connection: peer.connect(otherId),
+      connection: null, // peer.connect(otherId),
       video: null
     }
     otherPeer.call.on('stream', function(stream) {
@@ -30,7 +30,7 @@ socket.onmessage = function (event) {
       addVideoObjectForPeer(otherId, stream)
     })
     otherPeer.call.on('close', removePeer(otherId))
-    otherPeer.connection.on('data', function(data) {
+    /*otherPeer.connection.on('data', function(data) {
       data = JSON.parse(data)
       if (otherPeer.video) {
         otherPeer.video.position.set(data.px, data.py, data.pz)
@@ -38,7 +38,7 @@ socket.onmessage = function (event) {
         adjustVolumeForDistance(otherId)
       }
     })
-    otherPeer.connection.on('close', removePeer(otherId))
+    otherPeer.connection.on('close', removePeer(otherId)) */
     peers[otherId] = otherPeer
   }
 }
