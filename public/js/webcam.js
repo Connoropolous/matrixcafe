@@ -92,7 +92,7 @@ peer.on('call', function(call) {
       call.on('close', removePeer(call.peer))
     } else setTimeout(answer, 50)
   }
-  answer()
+  //answer()
 })
 peer.on('connection', function(conn) {
   console.log('formed a connection with peer ' + conn.peer)
