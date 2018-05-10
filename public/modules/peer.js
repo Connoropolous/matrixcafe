@@ -555,7 +555,9 @@ Negotiator._setupListeners = function(connection, pc, pc_id) {
   util.log('Listening for `negotiationneeded`');
   pc.onnegotiationneeded = function() {
     util.log('`negotiationneeded` triggered');
+    console.log('pc.signalingState-> ', pc.signalingState)
     if (pc.signalingState == 'stable') {
+      console.log('proceeding to make offer')
       Negotiator._makeOffer(connection);
     } else {
       util.log('onnegotiationneeded triggered when not stable. Is another connection being established?');

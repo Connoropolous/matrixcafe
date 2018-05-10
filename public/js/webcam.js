@@ -22,11 +22,11 @@ socket.onmessage = function (event) {
     console.log('initiate a call')
     var otherId = message.id
     var otherPeer = {
-      call: null, // peer.call(otherId, myCamera),
-      connection: null, // peer.connect(otherId),
+      call: peer.call(otherId, myCamera),
+      connection: peer.connect(otherId),
       video: null
     }
-    /*otherPeer.call.on('stream', function(stream) {
+    otherPeer.call.on('stream', function(stream) {
       console.log('receiving a stream from ' + message.id)
       addVideoObjectForPeer(otherId, stream)
     })
@@ -39,7 +39,7 @@ socket.onmessage = function (event) {
         adjustVolumeForDistance(otherId)
       }
     })
-    otherPeer.connection.on('close', removePeer(otherId)) */
+    otherPeer.connection.on('close', removePeer(otherId))
     peers[otherId] = otherPeer
   }
 }
@@ -50,7 +50,7 @@ function sendIdToServer () {
 }
 
 /* peerjs */
-peer = new Peer({host: 'desolate-springs-61251.herokuapp.com', secure: true, port: '', debug: 3})
+peer = new Peer({host: 'desolate-springs-61251.herokuapp.com', secure: true, port: '', debug: 2})
 function pingHeroku() {
     socket.readyState && socket.send(json({type:'ping'}))
     peer.socket.send({type: 'ping'})
