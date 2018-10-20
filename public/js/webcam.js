@@ -57,7 +57,7 @@ function pingHeroku() {
     timeoutID = setTimeout(pingHeroku, 20000)
 }
 peers = {}
-function focPeer(id) {
+function findOrCreatePeer(id) {
   if (!peers[id]) {
     peers[id] = {}
   }
@@ -80,7 +80,7 @@ function removePeer(id) {
 // receiving
 peer.on('call', function(call) {
   console.log('receiving a call from ' + call.peer)
-  focPeer(call.peer).call = call
+  findOrCreatePeer(call.peer).call = call
   function answer() {
     if (myCamera) {
       console.log('answering a call from ' + call.peer)
@@ -96,12 +96,12 @@ peer.on('call', function(call) {
 })
 peer.on('connection', function(conn) {
   console.log('formed a connection with peer ' + conn.peer)
-  focPeer(conn.peer).connection = conn
+  findOrCreatePeer(conn.peer).connection = conn
   conn.on('data', function(data) {
     data = JSON.parse(data)
-    if (focPeer(conn.peer).video) {
-      focPeer(conn.peer).video.position.set(data.px, data.py, data.pz)
-      focPeer(conn.peer).video.rotation.set(data.rx, data.ry, data.rz)
+    if (findOrCreatePeer(conn.peer).video) {
+      findOrCreatePeer(conn.peer).video.position.set(data.px, data.py, data.pz)
+      findOrCreatePeer(conn.peer).video.rotation.set(data.rx, data.ry, data.rz)
       adjustVolumeForDistance(conn.peer)
     }
   })
@@ -110,7 +110,7 @@ peer.on('connection', function(conn) {
 
 /* 3d video objects */
 function addVideoObjectForPeer (id, stream) {
-  if (peers[id]) {
+  if (findOrCreatePeer(id).video) {
     // don't double add video
     return
   }
@@ -141,5 +141,5 @@ function addVideoObjectForPeer (id, stream) {
   object.rotation.set(-Math.PI / 100, 0, 0)
   object.name = id
   scene.add(object)
-  focPeer(id).video = object
+  findOrCreatePeer(id).video = object
 }
