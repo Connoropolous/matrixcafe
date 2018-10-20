@@ -74,14 +74,16 @@ document.addEventListener('DOMContentLoaded', function(event) {
   mute.addEventListener('click', toggleMute)
   document.body.appendChild(renderer.domElement)
   /* usermedia */
-  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-  navigator.getUserMedia({video: true, audio: true}, function(stream) {
+  navigator.mediaDevices.getUserMedia({video: true, audio: true}).then(function(stream) {
     myCamera = stream
     var videoElement = document.createElement('video')
     videoElement.id = 'mine'
     videoElement.srcObject = stream
     document.body.appendChild(videoElement)
-  }, function(err) {
+    videoElement.onloadedmetadata = function(e) {
+      videoElement.play();
+    };
+  }).catch(function(err) {
     console.log('Failed to get local stream' ,err);
   });
   render()
