@@ -50,7 +50,7 @@ function sendIdToServer () {
 }
 
 /* peerjs */
-peer = new Peer({ port: 51394, host: 'desolate-springs-61251.herokuapp.com', path: '/peerjs', secure: true, debug: 2})
+peer = new Peer({ host: 'desolate-springs-61251.herokuapp.com', secure: true, debug: 2})
 function pingHeroku() {
     socket.readyState && socket.send(json({type:'ping'}))
     peer.socket.send({type: 'ping'})
