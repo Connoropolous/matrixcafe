@@ -110,6 +110,10 @@ peer.on('connection', function(conn) {
 
 /* 3d video objects */
 function addVideoObjectForPeer (id, stream) {
+  if (peers[id]) {
+    // don't double add video
+    return
+  }
   var videoElement = document.createElement('video')
   videoElement.id = id
   videoElement.srcObject = stream
