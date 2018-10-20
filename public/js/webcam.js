@@ -27,7 +27,7 @@ socket.onmessage = function (event) {
       video: null
     }
     otherPeer.call.on('stream', function(stream) {
-      console.log('receiving a stream from ' + message.id)
+      console.log('ONSTREAM: receiving a stream from ' + message.id)
       addVideoObjectForPeer(otherId, stream)
     })
     otherPeer.call.on('close', removePeer(otherId))
@@ -86,7 +86,7 @@ peer.on('call', function(call) {
       console.log('answering a call from ' + call.peer)
       call.answer(myCamera)
       call.on('stream', function(stream) {
-        console.log('receiving a stream from ' + call.peer)
+        console.log('ANSWER: receiving a stream from ' + call.peer)
         addVideoObjectForPeer(call.peer, stream)
       })
       call.on('close', removePeer(call.peer))
